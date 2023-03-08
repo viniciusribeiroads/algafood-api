@@ -39,4 +39,10 @@ public class EstadoService {
         estadoSalvo.get().setNome(estado.getNome());
         return estadoRepository.save(estadoSalvo.get());
     }
+
+    public Estado buscarOuFalhar(Long estadoId) {
+        return estadoRepository.findById(estadoId)
+                .orElseThrow(() ->
+                        new EntidadeNaoEncontradaException(String.format("Estado de id: %d nao encontrado", estadoId)));
+    }
 }
