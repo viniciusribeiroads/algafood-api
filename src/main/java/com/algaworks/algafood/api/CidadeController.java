@@ -1,8 +1,11 @@
 package com.algaworks.algafood.api;
 
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
+import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.service.CidadeService;
+import com.algaworks.algafood.domain.service.EstadoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,9 @@ public class CidadeController {
 
     @Autowired
     private CidadeService cidadeService;
+
+    @Autowired
+    private EstadoService estadoService;
 
     @GetMapping
     public List<Cidade> listar() {
@@ -41,16 +47,28 @@ public class CidadeController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, Cidade cidade) {
+//    @PutMapping("/{id}")
+//    public ResponseEntity<?> atualizar(@PathVariable Long id, Cidade cidade) {
+//        Cidade cidadeAtual = cidadeService
+//                .buscarOuFalhar(cidade.getId());
+//        BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+//        try {
+//            cidadeService.salvar(cidadeAtual);
+//            return ResponseEntity.ok(cidadeAtual);
+//        } catch (EntidadeNaoEncontradaException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//        }
+//    }
+
+    @PutMapping("/{cidadeId}")
+    public Cidade atualizar(@PathVariable Long cidadeId, @RequestBody Cidade cidade) {
         Cidade cidadeAtual = cidadeService
-                .buscarOuFalhar(cidade.getId());
+                .buscarOuFalhar(cidadeId);
         BeanUtils.copyProperties(cidade, cidadeAtual, "id");
         try {
-            cidadeService.salvar(cidadeAtual);
-            return ResponseEntity.ok(cidadeAtual);
+            return cidadeService.salvar(cidade);
         } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            throw new NegocioException(e.getMessage());
         }
     }
 }

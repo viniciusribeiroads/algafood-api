@@ -4,6 +4,7 @@ import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.repository.CidadeRepository;
+import com.algaworks.algafood.repository.EstadoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,8 @@ public class CidadeService {
 
     private final EstadoService estadoService;
 
+    private final EstadoRepository estadoRepository;
+
     public List<Cidade> listar() {
         return cidadeRepository.findAll();
     }
@@ -32,8 +35,10 @@ public class CidadeService {
 
     public Cidade salvar(Cidade cidade) {
 
-        Long estadoId = cidade.getEstado().getId();
-        Estado estado = estadoService.buscarOuFalhar(estadoId);
+        Estado estado = estadoService.buscarOuFalhar(cidade.getEstado().getId());
+//        Estado estado = estadoRepository
+//                .findById(cidade.getEstado().getId())
+//                .orElseThrow( () -> new NegocioException(String.format("Nao existe estado cadastrado com o codigo %d", cidade.getEstado().getId())));
         cidade.setEstado(estado);
         return cidadeRepository.save(cidade);
     }

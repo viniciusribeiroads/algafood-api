@@ -18,7 +18,6 @@ public class Cidade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @NonNull
     private String nome;
 
