@@ -3,6 +3,7 @@ package com.algaworks.algafood.domain.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Getter
@@ -18,6 +19,8 @@ public class Restaurante {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @Column(nullable = false)
     private String nome;
 
     @Column(name = "taxa_frete", nullable = false)

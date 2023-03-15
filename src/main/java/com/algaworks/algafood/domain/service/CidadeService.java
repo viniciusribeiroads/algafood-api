@@ -27,7 +27,7 @@ public class CidadeService {
     }
 
     public Cidade buscarPor(Long id) {
-        if (!nonNull(cidadeRepository.findById(id))) {
+        if (!cidadeRepository.findById(id).isPresent()) {
             throw new EntidadeNaoEncontradaException(String.format("Entidade com id %d nao encontrada.", id));
         }
         return cidadeRepository.findById(id).get();
